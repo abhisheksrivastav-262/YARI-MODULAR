@@ -320,16 +320,6 @@ button, input, select, textarea {
   line-height: 1.1;
 }
 
-.brand-tagline {
-  font-size: 0.72rem;
-  letter-spacing: 0.25em;
-  color: var(--gold-primary);
-  text-transform: uppercase;
-  font-weight: 600;
-}
-  color: #FFFFFF;
-  line-height: 1;
-}
 
 .brand-tagline {
   font-family: var(--font-body);
