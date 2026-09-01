@@ -266,38 +266,118 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- FIRST VISIT POPUP LOGIC ---
   const firstVisitPopup = document.getElementById('firstVisitPopup');
   const popupEnquiryForm = document.getElementById('popupEnquiryForm');
-  const closeFirstVisitPopup = document.getElementById('closeFirstVisitPopup');
   const popupFormView = document.getElementById('popupFormView');
   const popupThankYouView = document.getElementById('popupThankYouView');
+  const popupState = document.getElementById('popupState');
+  const popupCity = document.getElementById('popupCity');
+
+  // India State -> City Data
+  const stateCityData = {
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool", "Tirupati"],
+    "Arunachal Pradesh": ["Itanagar", "Tawang", "Ziro", "Pasighat"],
+    "Assam": ["Guwahati", "Silchar", "Dibrugarh", "Jorhat", "Nagaon", "Tinsukia"],
+    "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Darbhanga", "Purnia", "Ara", "Begusarai", "Katihar", "Bihar Sharif"],
+    "Chhattisgarh": ["Raipur", "Bhilai", "Bilaspur", "Korba", "Rajnandgaon", "Raigarh"],
+    "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa", "Ponda"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar", "Bhavnagar", "Jamnagar", "Junagadh", "Anand", "Bharuch"],
+    "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Rohtak", "Hisar", "Karnal"],
+    "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Mandi", "Solan", "Kullu"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar", "Hazaribagh"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi", "Davangere", "Ballari", "Tumakuru"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam", "Alappuzha", "Palakkad"],
+    "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Kolhapur", "Solapur", "Amravati", "Navi Mumbai"],
+    "Manipur": ["Imphal", "Thoubal", "Bishnupur", "Churachandpur"],
+    "Meghalaya": ["Shillong", "Tura", "Jowai"],
+    "Mizoram": ["Aizawl", "Lunglei", "Saiha"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Brahmapur", "Sambalpur", "Puri"],
+    "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar"],
+    "Sikkim": ["Gangtok", "Namchi", "Pelling"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Vellore"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Khammam", "Karimnagar", "Ramagundam"],
+    "Tripura": ["Agartala", "Dharmanagar", "Udaipur"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi", "Meerut", "Prayagraj", "Bareilly", "Aligarh", "Noida"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rudrapur", "Rishikesh"],
+    "West Bengal": ["Kolkata", "Howrah", "Asansol", "Siliguri", "Durgapur", "Bardhaman", "Kharagpur"],
+    "Delhi": ["New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi"],
+    "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla"],
+    "Chandigarh": ["Chandigarh"],
+    "Puducherry": ["Pondicherry", "Ozhukarai"]
+  };
 
   if (firstVisitPopup && popupEnquiryForm) {
     const hasSeenPopup = sessionStorage.getItem('yariPopupShown');
     
     // Show popup if not seen in this session
     if (hasSeenPopup !== 'true') {
-      // Delay slightly for better UX
       setTimeout(() => {
         firstVisitPopup.classList.add('active');
         sessionStorage.setItem('yariPopupShown', 'true');
       }, 1500);
     }
 
+    // Populate States
+    if (popupState) {
+      Object.keys(stateCityData).sort().forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        popupState.appendChild(option);
+      });
+
+      // Handle State Change
+      popupState.addEventListener('change', (e) => {
+        const selectedState = e.target.value;
+        popupCity.innerHTML = '<option value="" disabled selected>Select City</option>';
+        
+        if (selectedState && stateCityData[selectedState]) {
+          popupCity.disabled = false;
+          stateCityData[selectedState].sort().forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            popupCity.appendChild(option);
+          });
+        } else {
+          popupCity.innerHTML = '<option value="" disabled selected>Select State First</option>';
+          popupCity.disabled = true;
+        }
+      });
+    }
+
     const closePopupFn = () => {
       firstVisitPopup.classList.remove('active');
     };
 
-    if (closeFirstVisitPopup) {
-      closeFirstVisitPopup.addEventListener('click', closePopupFn);
-    }
-
-    firstVisitPopup.addEventListener('click', (e) => {
-      if (e.target === firstVisitPopup) {
-        closePopupFn();
-      }
-    });
+    // Note: Popup closing by clicking outside or pressing close button is removed. It's mandatory.
 
     popupEnquiryForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const nameInput = document.getElementById('popupFullName');
+      const phoneInput = document.getElementById('popupPhoneNumber');
+      const stateInput = document.getElementById('popupState');
+      const cityInput = document.getElementById('popupCity');
+
+      // Validation
+      if (!nameInput.value.trim()) {
+        showToast('⚠️ Please enter your name.', true);
+        return;
+      }
+      if (!phoneInput.value.trim()) {
+        showToast('⚠️ Please enter your mobile number.', true);
+        return;
+      }
+      if (!stateInput.value) {
+        showToast('⚠️ Please select your state.', true);
+        return;
+      }
+      if (!cityInput.value) {
+        showToast('⚠️ Please select your city.', true);
+        return;
+      }
 
       const submitBtn = popupEnquiryForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
@@ -305,10 +385,10 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.innerHTML = 'Opening WhatsApp...';
       submitBtn.disabled = true;
 
-      const name = document.getElementById('popupFullName').value;
-      const phone = document.getElementById('popupPhoneNumber').value;
-      const state = document.getElementById('popupState').value;
-      const city = document.getElementById('popupCity').value;
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const state = stateInput.value;
+      const city = cityInput.value;
 
       const whatsappText = `Hello YARI MODULAR LLP,\n\nI have a new enquiry from your website.\n\nName: ${name}\nMobile Number: ${phone}\nState: ${state}\nCity: ${city}\n\nI would like to discuss my interior design project.\n\nPlease get in touch with me.`;
       const encodedText = encodeURIComponent(whatsappText);
