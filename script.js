@@ -1,5 +1,5 @@
 /* ==========================================================================
-   YARI MODULAR LLP — Multipage Interactive Script & Controls
+   YARI MODULAR — Multipage Interactive Script & Controls
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Format WhatsApp Message exactly as specified
-      const whatsappText = `Hello Yari Modular LLP,\n\nI would like to discuss an interior design project.\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nProject Type: ${projectType}\nMessage: ${message}\n\nPlease get in touch with me.`;
+      const whatsappText = `Hello YARI MODULAR,\n\nI would like to discuss an interior design project.\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nProject Type: ${projectType}\nMessage: ${message}\n\nPlease get in touch with me.`;
 
       const encodedText = encodeURIComponent(whatsappText);
       const whatsappUrl = `https://wa.me/918971521619?text=${encodedText}`;
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const state = stateInput.value;
       const city = cityInput.value;
 
-      const whatsappText = `Hello YARI MODULAR LLP,\n\nI have a new enquiry from your website.\n\nName: ${name}\nMobile Number: ${phone}\nState: ${state}\nCity: ${city}\n\nI would like to discuss my interior design project.\n\nPlease get in touch with me.`;
+      const whatsappText = `Hello YARI MODULAR,\n\nI have a new enquiry from your website.\n\nName: ${name}\nMobile Number: ${phone}\nState: ${state}\nCity: ${city}\n\nI would like to discuss my interior design project.\n\nPlease get in touch with me.`;
       const encodedText = encodeURIComponent(whatsappText);
       const whatsappUrl = `https://wa.me/918971521619?text=${encodedText}`;
 

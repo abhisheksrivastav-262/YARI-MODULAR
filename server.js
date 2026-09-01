@@ -27,7 +27,7 @@ app.post('/api/enquiry', async (req, res) => {
   }
 
   // Format the message
-  const messageText = `New Website Enquiry — YARI MODULAR LLP
+  const messageText = `New Website Enquiry — YARI MODULAR
 
 Name: ${name}
 Mobile Number: ${phone}
