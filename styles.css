@@ -290,10 +290,9 @@ button, input, select, textarea {
 }
 
 .brand-logo-img {
-  height: 48px;
+  height: 70px;
   width: auto;
   object-fit: contain;
-  border-radius: 50%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: transform var(--transition-fast);
 }
@@ -2385,4 +2384,68 @@ textarea.form-control {
   width: 24px;
   height: 24px;
   fill: currentColor;
+}
+
+/* ==========================================================================
+   FIRST-VISIT ENQUIRY POPUP
+   ========================================================================== */
+.enquiry-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.enquiry-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.enquiry-popup-content {
+  background-color: #FFFFFF;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  padding: 40px;
+  position: relative;
+  transform: translateY(30px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.enquiry-popup-overlay.active .enquiry-popup-content {
+  transform: translateY(0);
+}
+
+.enquiry-popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.3s;
+}
+
+.enquiry-popup-close:hover {
+  color: var(--text-main);
+}
+
+@media (max-width: 480px) {
+  .enquiry-popup-content {
+    padding: 30px 20px;
+  }
 }

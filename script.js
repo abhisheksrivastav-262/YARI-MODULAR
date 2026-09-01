@@ -263,4 +263,77 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(el);
   });
 
+  // --- FIRST VISIT POPUP LOGIC ---
+  const firstVisitPopup = document.getElementById('firstVisitPopup');
+  const popupEnquiryForm = document.getElementById('popupEnquiryForm');
+  const closeFirstVisitPopup = document.getElementById('closeFirstVisitPopup');
+  const popupFormView = document.getElementById('popupFormView');
+  const popupThankYouView = document.getElementById('popupThankYouView');
+
+  if (firstVisitPopup && popupEnquiryForm) {
+    const hasSeenPopup = sessionStorage.getItem('yariPopupShown');
+    
+    // Show popup if not seen in this session
+    if (hasSeenPopup !== 'true') {
+      // Delay slightly for better UX
+      setTimeout(() => {
+        firstVisitPopup.classList.add('active');
+        sessionStorage.setItem('yariPopupShown', 'true');
+      }, 1500);
+    }
+
+    const closePopupFn = () => {
+      firstVisitPopup.classList.remove('active');
+    };
+
+    if (closeFirstVisitPopup) {
+      closeFirstVisitPopup.addEventListener('click', closePopupFn);
+    }
+
+    firstVisitPopup.addEventListener('click', (e) => {
+      if (e.target === firstVisitPopup) {
+        closePopupFn();
+      }
+    });
+
+    popupEnquiryForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const submitBtn = popupEnquiryForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+
+      submitBtn.innerHTML = 'Opening WhatsApp...';
+      submitBtn.disabled = true;
+
+      const name = document.getElementById('popupFullName').value;
+      const phone = document.getElementById('popupPhoneNumber').value;
+      const state = document.getElementById('popupState').value;
+      const city = document.getElementById('popupCity').value;
+
+      const whatsappText = `Hello YARI MODULAR LLP,\n\nI have a new enquiry from your website.\n\nName: ${name}\nMobile Number: ${phone}\nState: ${state}\nCity: ${city}\n\nI would like to discuss my interior design project.\n\nPlease get in touch with me.`;
+      const encodedText = encodeURIComponent(whatsappText);
+      const whatsappUrl = `https://wa.me/918971521619?text=${encodedText}`;
+
+      // Open WhatsApp
+      window.open(whatsappUrl, '_blank');
+
+      // Show Thank You state
+      popupFormView.style.display = 'none';
+      popupThankYouView.style.display = 'block';
+
+      // Close after 1.5 - 2 seconds
+      setTimeout(() => {
+        closePopupFn();
+        // Reset form for next time (though session prevents reshowing)
+        setTimeout(() => {
+          popupFormView.style.display = 'block';
+          popupThankYouView.style.display = 'none';
+          popupEnquiryForm.reset();
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }, 500);
+      }, 1800);
+    });
+  }
+
 });
